@@ -1,0 +1,224 @@
+{% extends "main/base.html" %}
+
+{% block title %}
+{% if profile %}{{ profile.full_name }} | VS{% else %}VS{% endif %}
+{% endblock %}
+
+{% block content %}
+<section id="home" class="hero-section py-5">
+    <div class="container">
+        <div class="row align-items-center g-4">
+            <div class="col-lg-7">
+                <p class="text-uppercase text-muted mb-2">Hello, I am</p>
+                <h1 class="display-5 fw-bold mb-3">{{ profile.full_name|default:"Your Name" }}</h1>
+                <h2 class="h4 text-primary mb-3">{{ profile.role|default:"Python & Django Developer" }}</h2>
+                <p class="lead mb-4">{{ profile.short_bio|default:"Add your profile details from Django admin to personalize this section." }}</p>
+                <div class="d-flex flex-wrap gap-2">
+                    <a href="{{ profile.cta_hire_me_url|default:'#contact' }}" class="btn btn-primary btn-lg">Hire Me</a>
+                    <a href="#contact" class="btn btn-outline-primary btn-lg">Contact</a>
+                </div>
+            </div>
+            <div class="col-lg-5 text-center">
+                {% if profile and profile.profile_image %}
+                    <img src="{{ profile.profile_image.url }}" class="img-fluid rounded-circle hero-image" alt="{{ profile.full_name }}">
+                {% elif profile and profile.profile_image_url %}
+                    <img src="{{ profile.profile_image_url }}" class="img-fluid rounded-circle hero-image" alt="{{ profile.full_name }}">
+                {% else %}
+                    <div class="hero-placeholder rounded-circle d-inline-flex align-items-center justify-content-center">Profile</div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="about" class="py-5 bg-light">
+    <div class="container">
+        <h2 class="section-title mb-4">About Me</h2>
+        <div class="row g-4">
+            <div class="col-md-8">
+                <p>{{ profile.detailed_about|default:"Add detailed background information in admin." }}</p>
+                {% if profile and profile.education_summary %}
+                    <h3 class="h5 mt-4">Education & Background</h3>
+                    <p>{{ profile.education_summary }}</p>
+                {% endif %}
+            </div>
+            <div class="col-md-4">
+                <div class="card shadow-sm border-0">
+                    <div class="card-body">
+                        <h3 class="h6 text-uppercase text-muted">Quick Info</h3>
+                        <p class="mb-1"><strong>Email:</strong> {{ profile.email|default:"Update in admin" }}</p>
+                        <p class="mb-3"><strong>Location:</strong> {{ profile.location|default:"Update in admin" }}</p>
+                        {% if profile and profile.resume %}
+                            <div class="d-grid gap-2">
+                                <a href="{{ profile.resume.url }}" class="btn btn-outline-primary w-100" target="_blank" rel="noopener noreferrer">View Resume</a>
+                                <a href="{{ profile.resume.url }}" class="btn btn-success w-100" download>Download Resume (PDF)</a>
+                            </div>
+                        {% else %}
+                            <button class="btn btn-secondary w-100" disabled>Resume Not Uploaded</button>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="skills" class="py-5">
+    <div class="container">
+        <h2 class="section-title mb-4">Skills</h2>
+        <div class="row g-4">
+            <div class="col-lg-7">
+                <h3 class="h5 mb-3">Technical Skills</h3>
+                {% for skill in technical_skills %}
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between">
+                            <span>{{ skill.name }}</span>
+                            <span>{{ skill.proficiency }}%</span>
+                        </div>
+                        <div class="progress" role="progressbar" aria-label="{{ skill.name }}">
+                            <div class="progress-bar skill-progress-bar" aria-valuenow="{{ skill.proficiency }}" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+                {% empty %}
+                    <p class="text-muted">Add technical skills from admin.</p>
+                {% endfor %}
+            </div>
+            <div class="col-lg-5">
+                <h3 class="h5 mb-3">Soft Skills</h3>
+                <div class="d-flex flex-wrap gap-2">
+                    {% for skill in soft_skills %}
+                        <span class="badge text-bg-primary p-2 px-3">{{ skill.name }}</span>
+                    {% empty %}
+                        <p class="text-muted">Add soft skills from admin.</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="projects" class="py-5 bg-light">
+    <div class="container">
+        <h2 class="section-title mb-4">Projects</h2>
+        <div class="row g-4">
+            {% for project in projects %}
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100 shadow-sm border-0 project-card">
+                        <div class="card-body d-flex flex-column">
+                            <h3 class="h4 mb-2 project-title">{{ project.title }}</h3>
+                            <p class="project-tech mb-3">{{ project.tech_stack }}</p>
+                            <div class="collapse mt-1" id="project-details-{{ forloop.counter }}">
+                                <p class="project-description mb-0">{{ project.description }}</p>
+                            </div>
+                            <div class="project-actions d-flex flex-wrap gap-2 mt-3 pt-2">
+                                <button class="btn btn-outline-secondary btn-sm project-action-btn" type="button" data-bs-toggle="collapse" data-bs-target="#project-details-{{ forloop.counter }}" aria-expanded="false" aria-controls="project-details-{{ forloop.counter }}">
+                                    Details
+                                </button>
+                                {% if project.github_link %}
+                                    <a href="{{ project.github_link }}" class="btn btn-outline-dark btn-sm project-action-btn" target="_blank" rel="noopener noreferrer">GitHub</a>
+                                {% endif %}
+                                {% if project.live_demo_link %}
+                                    <a href="{{ project.live_demo_link }}" class="btn btn-primary btn-sm project-action-btn" target="_blank" rel="noopener noreferrer">Live Demo</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% empty %}
+                <p class="text-muted">No projects added yet. Add them from admin.</p>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<section id="timeline" class="py-5">
+    <div class="container">
+        <h2 class="section-title mb-4">Experience & Education</h2>
+        <div class="timeline">
+            {% for item in timeline_entries %}
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content card border-0 shadow-sm">
+                        <div class="card-body">
+                            <p class="text-uppercase small text-primary mb-1">{{ item.get_entry_type_display }}</p>
+                            <h3 class="h5 mb-1">{{ item.title }}</h3>
+                            <p class="mb-2"><strong>{{ item.organization }}</strong></p>
+                            <p class="text-muted small mb-2">
+                                {{ item.start_date|date:"M Y" }} - {% if item.is_current %}Present{% elif item.end_date %}{{ item.end_date|date:"M Y" }}{% else %}N/A{% endif %}
+                            </p>
+                            {% if item.description %}<p class="mb-0">{{ item.description }}</p>{% endif %}
+                        </div>
+                    </div>
+                </div>
+            {% empty %}
+                <p class="text-muted">Add education, training (e.g., ITPRENEUR), and experience entries from admin.</p>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<section id="contact" class="py-5 bg-light">
+    <div class="container">
+        <h2 class="section-title mb-4">Contact</h2>
+        <div class="row g-4">
+            <div class="col-lg-6">
+                <form method="post" novalidate class="card card-body border-0 shadow-sm">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label class="form-label">Name</label>
+                        {{ form.name }}
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Email</label>
+                        {{ form.email }}
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Message</label>
+                        {{ form.message }}
+                    </div>
+                    <button type="submit" class="btn btn-primary">Send Message</button>
+                </form>
+            </div>
+            <div class="col-lg-6">
+                <div class="card card-body border-0 shadow-sm h-100">
+                    <h3 class="h5">Let us connect</h3>
+                    <p class="mb-1"><strong>Email:</strong> {{ profile.email|default:"Add in admin" }}</p>
+                    <p class="mb-1"><strong>Phone:</strong> {{ profile.phone|default:"Add in admin" }}</p>
+                    <p class="mb-0"><strong>Location:</strong> {{ profile.location|default:"Add in admin" }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll(".skill-progress-bar").forEach(function (bar) {
+        var value = Number(bar.getAttribute("aria-valuenow")) || 0;
+        var clamped = Math.max(0, Math.min(100, value));
+        bar.style.width = clamped + "%";
+    });
+
+    document.querySelectorAll(".project-description").forEach(function (element) {
+        var text = element.textContent.trim();
+        if (!text.includes("•")) {
+            return;
+        }
+
+        var items = text.split("•").map(function (item) { return item.trim(); }).filter(Boolean);
+        if (!items.length) {
+            return;
+        }
+
+        var list = document.createElement("ul");
+        list.className = "project-bullet-list flex-grow-1";
+        items.forEach(function (item) {
+            var li = document.createElement("li");
+            li.textContent = item;
+            list.appendChild(li);
+        });
+        element.replaceWith(list);
+    });
+});
+</script>
+{% endblock %}

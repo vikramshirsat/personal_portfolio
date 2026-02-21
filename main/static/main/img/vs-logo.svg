@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="VS logo">
+  <defs>
+    <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#22d3ee"/>
+      <stop offset="100%" stop-color="#a21caf"/>
+    </linearGradient>
+  </defs>
+
+  <circle cx="256" cy="256" r="220" fill="url(#g)"/>
+  <circle cx="256" cy="256" r="182" fill="none" stroke="#ffffff" stroke-width="16"/>
+
+  <text x="256" y="300" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="150" font-weight="700" fill="#ffffff">VS</text>
+
+  <path d="M78 256 L126 218 L138 236 L111 256 L138 276 L126 294 Z" fill="#ffffff"/>
+  <path d="M434 256 L386 218 L374 236 L401 256 L374 276 L386 294 Z" fill="#ffffff"/>
+  <rect x="321" y="178" width="20" height="160" rx="10" transform="rotate(20 331 258)" fill="#ffffff"/>
+</svg>
