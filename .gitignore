@@ -7,9 +7,9 @@
 *.pyc
 __pycache__/
 local_settings.py
-db.sqlite3  
+
 db.sqlite3-journal
-media
+
 # remove db.sqllite and media from gitignore because to send data to production
 
 # If your build process includes running collectstatic, then you probably don't need or want to include staticfiles/
